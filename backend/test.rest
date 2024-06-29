@@ -1,0 +1,7 @@
+GET http://localhost:3001/api/users/1
+
+Content-Type: application/json
+
+{
+    "user" : 4
+}
