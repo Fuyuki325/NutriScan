@@ -13,8 +13,8 @@ const Welcome = () => {
         className="w-32 h-32"
         alt="Logo"
       />
-      <h1 className="text-headerBlue font-Lato text-5xl font-bold mt-10 ">Welcome!</h1>
-      <p className="text-welcomeGreen text-center text-base font-Lato w-48 mt-1">
+      <h1 className="text-headerBlue font-Lato text-4xl mt-8 text-center w-60">Welcome to NutriScan!</h1>
+      <p className="text-welcomeGreen text-center text-xl font-Lato w-48 mt-1">
       We will help you find out if your food fits your diet!
       </p>
       <div className="flex flex-row mt-6 gap-2">

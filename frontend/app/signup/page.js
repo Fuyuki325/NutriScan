@@ -19,4 +19,5 @@ export default function Page() {
       {isClient ? (clientIsMobile ? <SignUp /> : <Desktop />) : null}
     </div>
   );
+    
 }

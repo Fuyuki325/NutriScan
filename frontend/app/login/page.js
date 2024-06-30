@@ -19,6 +19,7 @@ export default function Page() {
   return (
     <div>
       {isClient ? (clientIsMobile ? <Login /> : <Desktop />) : null}
-    </div>
+    </div> 
   );
+  
 }
