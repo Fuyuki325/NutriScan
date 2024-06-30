@@ -112,6 +112,7 @@ export default function ScanPage() {
         method: 'POST',
         headers: {
           'Content-Type' : 'application/json',
+          'Access-Control-Allow-Origin': '*',
         },
         body: JSON.stringify({
           image: capturedImage
