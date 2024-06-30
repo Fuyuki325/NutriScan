@@ -66,7 +66,7 @@ const Login = () => {
   return (
     <>
       <title>Login</title>
-      <h1 className="text-headerBlue font-Lato text-5xl font-bold w-199 h-77 mb-16 mt-12 ml-8">LOGIN</h1>
+      <h1 className="text-headerBlue font-Lato text-5xl w-199 h-77 mb-16 mt-12 ml-8">LOGIN</h1>
       <div className="flex flex-col items-center">
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit} className="w-5/6">
