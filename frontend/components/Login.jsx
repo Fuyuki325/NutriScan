@@ -97,6 +97,15 @@ const Login = () => {
           <div className='flex flex-row justify-center'>
             <LongButton text="LOGIN" />
           </div>
+
+          <div className='flex flex-row justify-center'>
+            <Link
+              href="/welcome"
+              className="text-blue px-3 py-2 underline hover:opacity-75"
+            >
+              Go Back
+            </Link>
+          </div>
         </form>
       </div>
     </>

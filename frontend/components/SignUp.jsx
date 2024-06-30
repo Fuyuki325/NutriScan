@@ -2,6 +2,7 @@ import LongButton from '@/components/LongButton';
 import React from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'
+import Link from 'next/link';
 
 const SignUp = () => {
   const router = useRouter()
@@ -113,6 +114,15 @@ const SignUp = () => {
           />
           {error && <p className="text-red-500 mb-4">{error}</p>}
           <LongButton text="SIGN UP" />
+
+          <div className='flex flex-row justify-center'>
+            <Link
+              href="/welcome"
+              className="text-blue px-3 py-2 underline hover:opacity-75"
+            >
+              Go Back
+            </Link>
+          </div>
         </form>
       </div>
     </>
