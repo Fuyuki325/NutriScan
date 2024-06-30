@@ -4,6 +4,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/UserRoutes');
+const aiRoutes = require('./routes/AIRoute');
+
 
 dotenv.config(); // load .env
 
@@ -23,6 +25,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', userRoutes)
 
+app.use('/scan', aiRoutes)
 
 //bind to port
 app.listen(port, () => {

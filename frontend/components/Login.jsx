@@ -44,8 +44,14 @@ const Login = () => {
       }
 
       const data = await response.json();
+      
       setCookie('sessionID', data.sessionID)
-
+      setCookie('A', data.diet.A);
+      setCookie('B', data.diet.B);
+      setCookie('C', data.diet.C);
+      setCookie('D', data.diet.D);
+      setCookie('E', data.diet.E);
+      setCookie('F', data.diet.F);
       router.push('/scan');
     } catch (error) {
       setError(error.message);

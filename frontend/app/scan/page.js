@@ -28,6 +28,10 @@ export default function scanPage() {
   const [isClient, setIsClient] = useState(false);
   const [clientIsMobile, setClientIsMobile] = useState(false);
 
+  const [error, setError] = useState(null);
+
+  const [claudeMessage, setClaudeMessage] = useState('');
+
   useEffect(() => {
     setIsClient(true);
     setClientIsMobile(isMobile);
@@ -40,7 +44,19 @@ export default function scanPage() {
 
   const handleLogOut = () => {
     delete_cookie('sessionID')
+    delete_cookie('A')
+    delete_cookie('B')
+    delete_cookie('C')
+    delete_cookie('D')
+    delete_cookie('E')
+    delete_cookie('F')
   };
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
 
   function get_cookie(name){
     return document.cookie.split(';').some(c => {
@@ -79,19 +95,106 @@ export default function scanPage() {
     setRescan(false);
   };
 
-  const handleSubmitClick = () => {
+  function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+  }
+
+  const handleSubmitClick = async(e) => {
     setProcessing(true); // processing(API) starts
     setRescan(false); // No Rescan & Submit button
 
     console.log('api called');
+    console.log('Image format for lin:', capturedImage);
+    e.preventDefault();
+    
+    try {
+      const response = await fetch('http://localhost:3001/scan', {
+        method: 'POST',
+        headers: {
+          'Content-Type' : 'application/json',
+        },
+        body: JSON.stringify({
+          image: capturedImage
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Scan failed');
+      }
+
+      const data = await response.json();
+      console.log('array:', data.options);
+      const arr = data.options;
+      console.log('A', getCookie('A'));
+      console.log('B', getCookie('B'));
+      if (getCookie('A') && !arr.includes("A")) {
+        setSafeToConsume(false);
+        setClaudeMessage('This product is not suitable for vegans.')
+        setProcessing(false); // processing is done
+        setResultPage(true); // show result page
+        setCapturedImage(null); // discard image
+        return;
+      }
+      if (getCookie('B') && !arr.includes("B")) {
+        setSafeToConsume(false);
+        setClaudeMessage('This product is not suitable for vegetarians.')
+        setProcessing(false); // processing is done
+        setResultPage(true); // show result page
+        setCapturedImage(null); // discard image
+        return;
+      }
+      if (getCookie('C') && !arr.includes("C")) {
+        setSafeToConsume(false);
+        setClaudeMessage('This product is not halal.')
+        setProcessing(false); // processing is done
+        setResultPage(true); // show result page
+        setCapturedImage(null); // discard image
+        return;
+      }
+      if (getCookie('D') && !arr.includes("D")) {
+        setSafeToConsume(false);
+        setClaudeMessage('This product is not gluten-free.')
+        setProcessing(false); // processing is done
+        setResultPage(true); // show result page
+        setCapturedImage(null); // discard image
+        return;
+      }
+      if (getCookie('E') && !arr.includes("E")) {
+        setSafeToConsume(false);
+        setClaudeMessage('This product is not dairy-free.')
+        setProcessing(false); // processing is done
+        setResultPage(true); // show result page
+        setCapturedImage(null); // discard image
+        return;
+      }
+      if (getCookie('F') && !arr.includes("F")) {
+        setSafeToConsume(false);
+        setClaudeMessage('This product is not nut-free.')
+        setProcessing(false); // processing is done
+        setResultPage(true); // show result page
+        setCapturedImage(null); // discard image
+        return;
+      }
+
+      setSafeToConsume(true); // Safe to consume
+      setClaudeMessage('This product is suitable for you based on your dietary preferences.')
+      setProcessing(false); // processing is done
+      setResultPage(true); // show result page
+      setCapturedImage(null); // discard image
+      
+
+    } catch (error) {
+      setError(error.message);
+    }
+
     console.log('api finished');
 
     setProcessing(false); // processing is done
     setResultPage(true); // show result page
     setCapturedImage(null); // discard image
-
-    // if safe to consume else => setSafeToConsume(false);
-    setSafeToConsume(false);
   };
 
   const handleBackButton = () => {
@@ -105,7 +208,7 @@ export default function scanPage() {
     setSessionID(sessionID);
     if (sessionID) {
     } else {
-      // router.push('/welcome');
+      router.push('/welcome');
     }
   }, [sessionID]);
 
@@ -115,7 +218,7 @@ export default function scanPage() {
   const videoConstraints = {
     width: 1080,
     height: 1920,
-    facingMode: 'environment'
+    facingMode: 'user'
   };
 
   const WebcamCapture = ({openCamera, setCapturedImage, setOpenCamera, setProcessing}) => {
@@ -142,8 +245,8 @@ export default function scanPage() {
             screenshotFormat="image/jpeg"
             videoConstraints={videoConstraints}
           />
-          {captureButton && <LongButton text="CAPTURE" onClick={capture}/>}
-          <LongButton text="CANCEL" onClick={handleCancelClick}/>
+          {captureButton && <LongButton text="CAPTURE" onClick={capture} />}
+          <LongButton text="CANCEL" onClick={handleCancelClick} />
         </>
       )}
     </>
@@ -155,22 +258,35 @@ export default function scanPage() {
       {isClient ? (clientIsMobile ?
         <>
         <title>Scan</title>
-        <button 
-              className="absolute top-8 right-6 rounded-full text-white bg-welcomeGreen w-10 h-10"
+        {/*<div className="flex justify-end">
+            <button className="rounded-full text-white bg-welcomeGreen mt-4 mr-4 w-10 h-10 flex items-center justify-center"
+            onClick={handleTSClick}
+            >TS
+            </button>
+            {showLogout && (
+            <div className="absolute mt-12 mr-12 bg-white shadow-strong rounded-lg">
+              <button onClick={handleLogOut} className="bg-white text-black py-2 px-6 rounded-lg border-black border-[1px]">
+                Log out
+              </button>
+            </div>
+            )}
+        </div>*/}
+        <div className="relative flex flex-col items-center pt-11 pb-11 justify-center h-screen space-y-3">
+          <div className="flex justify-center w-full">
+            <Image src={Logo} alt="Logo" className="w-32 h-32 -mt-3"/>
+            <button 
+              className="absolute top-12 right-5 rounded-full text-white bg-welcomeGreen w-10 h-10"
               onClick={handleTSClick}
             >
               TS
-        </button>
-        {showLogout && (
-        <div className="top-16 right-12 bg-white shadow-strong rounded-lg">
-          <button onClick={handleLogOut} className="absolute bg-white text-black py-2 px-6 rounded-lg border-black border-[1px]">
-            Log out
-          </button>
-        </div>
-        )}
-        <div className="flex flex-col items-center pt-11 pb-11 justify-center h-screen space-y-3">
-          <div className="relative flex justify-center w-full">
-            <Image src={Logo} alt="Logo" className="w-32 h-32 -mt-3"/>
+            </button>
+            {showLogout && (
+            <div className="absolute top-24 right-4 bg-white shadow-strong rounded-lg">
+              <button onClick={handleLogOut} className="bg-white text-black py-2 px-6 rounded-lg border-black border-[1px]">
+                Log out
+              </button>
+            </div>
+            )}
           </div>
           {!resultPage && <div className="text-center lato text-3xl text-cyan w-[70%] font-bold">
             {processing ? "Just One Moment" : "Scan a Nutrition Label"}
@@ -178,7 +294,7 @@ export default function scanPage() {
           {resultPage && <div className={`text-center lato text-3xl ${safeToConsume ? 'text-green-500' : 'text-red-500'} w-[70%] font-bold`}>
             {safeToConsume ? "Safe To Consume" : "Not Safe To Consume"}
           </div>}
-          {resultPage && <div className="text-center text-signupGray w-[70%]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>}
+          {resultPage && <div className="text-center text-signupGray w-[70%]">{claudeMessage}</div>}
           {resultPage && <LongButton text="BACK" onClick={handleBackButton} />}
           {processing && <div className="text-center text-signupGray">Processing...</div>}
           {scanButton && <LongButton text="SCAN" onClick={handleScanClick} />}
@@ -188,7 +304,7 @@ export default function scanPage() {
               <>
                 <Image src={capturedImage} alt="Captured Nutrition Label" width={350} height={350} />
                 {rescan && <LongButton text="SUBMIT" onClick={handleSubmitClick} />}
-                {rescan && <LongButton text="RESCAN" onClick={handleRescanClick} />}
+                {rescan && <LongButton text="RESCAN" onClick={handleRescanClick}/>}
               </>
             )}
           </div>
