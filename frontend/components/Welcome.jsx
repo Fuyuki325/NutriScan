@@ -28,7 +28,7 @@ const Welcome = () => {
           href="/signup"
           className="bg-darkblue text-white font-Lato py-2 px-6 rounded-lg hover:bg-darkblue-200"
           > 
-        SIGNUP
+        SIGN UP
         </Link>
       </div>
     </div>
