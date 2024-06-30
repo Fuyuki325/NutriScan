@@ -35,7 +35,7 @@ export default function ScanPage() {
   useEffect(() => {
     setIsClient(true);
     setClientIsMobile(isMobile);
-  }, []);
+  });
 
   // When pressed on TS button, logout drops down.
   const handleTSClick = () => {
@@ -231,7 +231,7 @@ export default function ScanPage() {
           setOpenCamera(false);
           setRescan(true);
         }
-    }, [webcamRef, setCapturedImage, setOpenCamera, setProcessing]);
+    }, [webcamRef, setCapturedImage, setOpenCamera]);
    
     return (
       <>
