@@ -13,7 +13,6 @@ export default function Page() {
     setClientIsMobile(isMobile);
   }, []);
 
-  console.log(clientIsMobile, isMobile, "what");
 
   return (
     <div>

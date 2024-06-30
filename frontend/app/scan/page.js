@@ -79,7 +79,6 @@ export default function ScanPage() {
     // timeout
     setTimeout(() => {
       setCaptureButton(true);
-      console.log('setcapturebutton ran')
     }, 2000);
   };
  
@@ -106,8 +105,6 @@ export default function ScanPage() {
     setProcessing(true); // processing(API) starts
     setRescan(false); // No Rescan & Submit button
 
-    console.log('api called');
-    console.log('Image format for lin:', capturedImage);
     e.preventDefault();
     
     try {
@@ -126,10 +123,7 @@ export default function ScanPage() {
       }
 
       const data = await response.json();
-      console.log('array:', data.options);
       const arr = data.options;
-      console.log('A', getCookie('A'));
-      console.log('B', getCookie('B'));
       if (getCookie('A') && !arr.includes("A")) {
         setSafeToConsume(false);
         setClaudeMessage('This product is not suitable for vegans.')
@@ -189,8 +183,6 @@ export default function ScanPage() {
     } catch (error) {
       setError(error.message);
     }
-
-    console.log('api finished');
 
     setProcessing(false); // processing is done
     setResultPage(true); // show result page

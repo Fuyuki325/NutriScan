@@ -62,7 +62,6 @@ const Login = () => {
     // Check if sessionID cookie exists
     const sessionID = document.cookie.split('; ').find(row => row.startsWith('sessionID='));
     if (sessionID) {
-      console.log('SessionID cookie found:', sessionID);
       router.push('/scan');
     } else {
       console.log('SessionID cookie not found');
