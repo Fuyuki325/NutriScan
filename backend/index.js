@@ -14,8 +14,11 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
-
+app.use(cors({
+  origin: 'nutriscan-ruby.vercel.app', 
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  credentials: true, 
+}));
 
 //Routes
 app.get('/', (req, res) => {
