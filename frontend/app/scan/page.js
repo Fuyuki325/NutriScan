@@ -9,7 +9,7 @@ import { isMobile } from 'react-device-detect';
 import Desktop from "@/components/Desktop";
 import { useRouter } from 'next/navigation'
 
-export default function scanPage() {
+export default function ScanPage() {
   const router = useRouter();
 
   const [showLogout, setShowLogout] = useState(false);
