@@ -20,6 +20,10 @@ app.use(cors({
   credentials: true, 
 }));
 
+
+app.options('*', cors());
+
+
 //Routes
 app.get('/', (req, res) => {
   res.send('Hello from the backend!');
