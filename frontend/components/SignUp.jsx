@@ -74,7 +74,7 @@ const SignUp = () => {
     <>
       <title>Signup</title>
       <div className="font-Lato flex flex-col justify-center items-center h-screen">
-        <div className="items-start text-headerBlue text-5xl font-bold text-left w-[85%]">SIGN UP</div>
+        <div className="items-start text-headerBlue text-5xl text-left w-[85%]">SIGN UP</div>
         <p className="text-signupGray mt-6 text-left w-[85%]">
           Select the boxes that fit your dietary needs.
         </p>
