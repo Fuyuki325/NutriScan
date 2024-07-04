@@ -66,7 +66,8 @@ export default function ScanPage() {
   
     for (let cookie of cookies) {
       if (cookie.startsWith(name + "=")) {
-        return cookie.substring(name.length + 1); // Add 1 for the "=" character
+        const value = cookie.substring(name.length + 1);
+      return value === "true" ? true : value === "false" ? false : value;
       }
     }
     return null; // Return null if cookie with given name is not found
