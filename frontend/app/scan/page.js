@@ -42,6 +42,7 @@ export default function ScanPage() {
   };
 
   const handleLogOut = () => {
+    alert(document.cookie);
     delete_cookie("sessionID");
     delete_cookie("A");
     delete_cookie("B");
