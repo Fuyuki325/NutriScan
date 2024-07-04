@@ -272,14 +272,14 @@ export default function ScanPage() {
             >
               TS
             </button>
-            {showLogout && (
+          </div>
+          {showLogout && (
             <div className="absolute top-24 right-4 bg-white shadow-strong rounded-lg" onClick={handleLogOut} >
               <button onClick={handleLogOut}  className="bg-white text-black py-2 px-6 rounded-lg border-black border-[1px]">
                 Log out
               </button>
             </div>
             )}
-          </div>
           {!resultPage && <div className="text-center lato text-3xl text-cyan w-[70%] font-bold">
             {processing ? "Just One Moment" : "Scan a Nutrition Label"}
           </div>}
