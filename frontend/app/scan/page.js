@@ -64,7 +64,7 @@ export default function ScanPage() {
     });
   }
 
-  function delete_cookie(name, path, domain) {
+  function delete_cookie(name, path="/", domain) {
     if (get_cookie(name)) {
       document.cookie = `${name}=; path=${path}; domain=${
         domain ? domain : ""
