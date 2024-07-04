@@ -192,7 +192,6 @@ export default function ScanPage() {
   };
 
   useEffect(() => {
-    // Check if sessionID cookie exists
     const sessionID = document.cookie.split('; ').find(row => row.startsWith('sessionID='));
     setSessionID(sessionID);
     if (sessionID) {

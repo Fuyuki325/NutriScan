@@ -60,14 +60,11 @@ const Login = () => {
   };
 
   useEffect(() => {
-    // Check if sessionID cookie exists
     const sessionID = document.cookie.split('; ').find(row => row.startsWith('sessionID='));
     if (sessionID) {
       router.push('/scan');
-    } else {
-      console.log('SessionID cookie not found');
     }
-  }, []); // Empty dependency array to run this effect only once on component mount
+  }, []);
   
   return (
     <>
