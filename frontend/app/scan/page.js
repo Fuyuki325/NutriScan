@@ -210,7 +210,7 @@ export default function ScanPage() {
   const videoConstraints = {
     width: 1080,
     height: 1920,
-    facingMode: 'user'
+    facingMode: 'environment'
   };
 
   const WebcamCapture = ({openCamera, setCapturedImage, setOpenCamera, setProcessing}) => {
@@ -250,22 +250,16 @@ export default function ScanPage() {
       {isClient ? (clientIsMobile ?
         <>
         <title>Scan</title>
-        {/*<div className="flex justify-end">
-            <button className="rounded-full text-white bg-welcomeGreen mt-4 mr-4 w-10 h-10 flex items-center justify-center"
-            onClick={handleTSClick}
-            >TS
-            </button>
-            {showLogout && (
-            <div className="absolute mt-12 mr-12 bg-white shadow-strong rounded-lg">
-              <button onClick={handleLogOut} className="bg-white text-black py-2 px-6 rounded-lg border-black border-[1px]">
-                Log out
-              </button>
-            </div>
-            )}
-        </div>*/}
         <div className="relative flex flex-col items-center pt-11 pb-11 justify-center h-screen space-y-3">
           <div className="flex justify-center w-full">
             <Image src={Logo} alt="Logo" className="w-32 h-32 -mt-3"/>
+            {showLogout && (
+              <div className="absolute top-24 right-4 bg-white shadow-strong rounded-lg" onClick={handleLogOut} >
+                <button onClick={handleLogOut}  className="bg-white text-black py-2 px-6 rounded-lg border-black border-[1px]">
+                  Log out
+                </button>
+              </div>
+              )}
             <button 
               className="absolute top-12 right-5 rounded-full text-white bg-welcomeGreen w-10 h-10"
               onClick={handleTSClick}
@@ -273,13 +267,6 @@ export default function ScanPage() {
               TS
             </button>
           </div>
-          {showLogout && (
-            <div className="absolute top-24 right-4 bg-white shadow-strong rounded-lg" onClick={handleLogOut} >
-              <button onClick={handleLogOut}  className="bg-white text-black py-2 px-6 rounded-lg border-black border-[1px]">
-                Log out
-              </button>
-            </div>
-            )}
           {!resultPage && <div className="text-center lato text-3xl text-cyan w-[70%] font-bold">
             {processing ? "Just One Moment" : "Scan a Nutrition Label"}
           </div>}
