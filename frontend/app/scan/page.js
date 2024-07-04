@@ -273,8 +273,8 @@ export default function ScanPage() {
               TS
             </button>
             {showLogout && (
-            <div className="absolute top-24 right-4 bg-white shadow-strong rounded-lg">
-              <button onClick={handleLogOut} className="bg-white text-black py-2 px-6 rounded-lg border-black border-[1px]">
+            <div className="absolute top-24 right-4 bg-white shadow-strong rounded-lg" onClick={handleLogOut} >
+              <button onClick={handleLogOut}  className="bg-white text-black py-2 px-6 rounded-lg border-black border-[1px]">
                 Log out
               </button>
             </div>
