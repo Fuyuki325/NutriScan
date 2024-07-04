@@ -66,7 +66,6 @@ export default function ScanPage() {
   
     for (let cookie of cookies) {
       if (cookie.startsWith(name + "=")) {
-        alert(cookie.substring(name.length + 1));
         return cookie.substring(name.length + 1); // Add 1 for the "=" character
       }
     }
