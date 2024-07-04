@@ -65,7 +65,6 @@ export default function ScanPage() {
 
   function delete_cookie(name, path="/", domain) {
     if (get_cookie(name)) {
-      alert(document.cookie);
       document.cookie = `${name}=; path=${path}; domain=${
         domain ? domain : ""
       }; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
