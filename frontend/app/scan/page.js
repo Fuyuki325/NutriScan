@@ -59,13 +59,13 @@ export default function ScanPage() {
 
   function get_cookie(name) {
     return document.cookie.split(";").some((c) => {
-      alert(c.trim().startsWith(name + "="));
       return c.trim().startsWith(name + "=");
     });
   }
 
   function delete_cookie(name, path="/", domain) {
     if (get_cookie(name)) {
+      alert(document.cookie);
       document.cookie = `${name}=; path=${path}; domain=${
         domain ? domain : ""
       }; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
