@@ -194,7 +194,7 @@ export default function ScanPage() {
     setScanButton(true);
   };
 
-  /*useEffect(() => {
+  useEffect(() => {
     // Check if sessionID cookie exists
     const sessionID = document.cookie.split('; ').find(row => row.startsWith('sessionID='));
     setSessionID(sessionID);
@@ -202,7 +202,7 @@ export default function ScanPage() {
     } else {
       router.push('/welcome');
     }
-  }, [sessionID]);*/
+  }, [sessionID]);
 
   const videoConstraints = {
     width: 1080,
