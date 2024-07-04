@@ -1,13 +1,13 @@
-'use client'
+"use client";
 import Image from "next/image";
-import Logo from "@/public/Nutrition Scanner-Private-PNG.png"
+import Logo from "@/public/Nutrition Scanner-Private-PNG.png";
 import LongButton from "@/components/LongButton";
-import Webcam from 'react-webcam';
-import React, { useState, useEffect } from 'react';
+import Webcam from "react-webcam";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { isMobile } from 'react-device-detect';
+import { isMobile } from "react-device-detect";
 import Desktop from "@/components/Desktop";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 export default function ScanPage() {
   const router = useRouter();
@@ -24,13 +24,12 @@ export default function ScanPage() {
 
   const [sessionID, setSessionID] = useState(null);
 
-
   const [isClient, setIsClient] = useState(false);
   const [clientIsMobile, setClientIsMobile] = useState(false);
 
   const [error, setError] = useState(null);
 
-  const [claudeMessage, setClaudeMessage] = useState('');
+  const [claudeMessage, setClaudeMessage] = useState("");
 
   useEffect(() => {
     setIsClient(true);
@@ -43,35 +42,36 @@ export default function ScanPage() {
   };
 
   const handleLogOut = () => {
-    delete_cookie('sessionID')
-    delete_cookie('A')
-    delete_cookie('B')
-    delete_cookie('C')
-    delete_cookie('D')
-    delete_cookie('E')
-    delete_cookie('F')
+    delete_cookie("sessionID");
+    delete_cookie("A");
+    delete_cookie("B");
+    delete_cookie("C");
+    delete_cookie("D");
+    delete_cookie("E");
+    delete_cookie("F");
   };
 
   function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
+    if (parts.length === 2) return parts.pop().split(";").shift();
   }
 
-  function get_cookie(name){
-    return document.cookie.split(';').some(c => {
-        return c.trim().startsWith(name + '=');
+  function get_cookie(name) {
+    return document.cookie.split(";").some((c) => {
+      return c.trim().startsWith(name + "=");
     });
   }
 
-  function delete_cookie( name, path, domain ) {
+  function delete_cookie(name, path, domain) {
     if (get_cookie(name)) {
-      document.cookie = `${name}=; path=${path}; domain=${domain ? domain : ''}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+      document.cookie = `${name}=; path=${path}; domain=${
+        domain ? domain : ""
+      }; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
     }
     setSessionID(null);
   }
 
-  
   const handleScanClick = () => {
     setOpenCamera(true);
     setScanButton(false);
@@ -81,7 +81,7 @@ export default function ScanPage() {
       setCaptureButton(true);
     }, 2000);
   };
- 
+
   const handleCancelClick = () => {
     setOpenCamera(false);
     setCapturedImage(null);
@@ -96,77 +96,77 @@ export default function ScanPage() {
 
   function setCookie(name, value, days) {
     const date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     const expires = "expires=" + date.toUTCString();
     document.cookie = name + "=" + value + ";" + expires + ";path=/";
   }
 
-  const handleSubmitClick = async(e) => {
+  const handleSubmitClick = async (e) => {
     setProcessing(true); // processing(API) starts
     setRescan(false); // No Rescan & Submit button
 
     e.preventDefault();
-    
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/scan`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type' : 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          image: capturedImage
+          image: capturedImage,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Scan failed');
+        throw new Error("Scan failed");
       }
 
       const data = await response.json();
       const arr = data.options;
-      if (getCookie('A') && !arr.includes("A")) {
+      if (getCookie("A") && !arr.includes("A")) {
         setSafeToConsume(false);
-        setClaudeMessage('This product is not suitable for vegans.')
+        setClaudeMessage("This product is not suitable for vegans.");
         setProcessing(false); // processing is done
         setResultPage(true); // show result page
         setCapturedImage(null); // discard image
         return;
       }
-      if (getCookie('B') && !arr.includes("B")) {
+      if (getCookie("B") && !arr.includes("B")) {
         setSafeToConsume(false);
-        setClaudeMessage('This product is not suitable for vegetarians.')
+        setClaudeMessage("This product is not suitable for vegetarians.");
         setProcessing(false); // processing is done
         setResultPage(true); // show result page
         setCapturedImage(null); // discard image
         return;
       }
-      if (getCookie('C') && !arr.includes("C")) {
+      if (getCookie("C") && !arr.includes("C")) {
         setSafeToConsume(false);
-        setClaudeMessage('This product is not halal.')
+        setClaudeMessage("This product is not halal.");
         setProcessing(false); // processing is done
         setResultPage(true); // show result page
         setCapturedImage(null); // discard image
         return;
       }
-      if (getCookie('D') && !arr.includes("D")) {
+      if (getCookie("D") && !arr.includes("D")) {
         setSafeToConsume(false);
-        setClaudeMessage('This product is not gluten-free.')
+        setClaudeMessage("This product is not gluten-free.");
         setProcessing(false); // processing is done
         setResultPage(true); // show result page
         setCapturedImage(null); // discard image
         return;
       }
-      if (getCookie('E') && !arr.includes("E")) {
+      if (getCookie("E") && !arr.includes("E")) {
         setSafeToConsume(false);
-        setClaudeMessage('This product is not dairy-free.')
+        setClaudeMessage("This product is not dairy-free.");
         setProcessing(false); // processing is done
         setResultPage(true); // show result page
         setCapturedImage(null); // discard image
         return;
       }
-      if (getCookie('F') && !arr.includes("F")) {
+      if (getCookie("F") && !arr.includes("F")) {
         setSafeToConsume(false);
-        setClaudeMessage('This product is not nut-free.')
+        setClaudeMessage("This product is not nut-free.");
         setProcessing(false); // processing is done
         setResultPage(true); // show result page
         setCapturedImage(null); // discard image
@@ -174,12 +174,12 @@ export default function ScanPage() {
       }
 
       setSafeToConsume(true); // Safe to consume
-      setClaudeMessage('This product is suitable for you based on your dietary preferences.')
+      setClaudeMessage(
+        "This product is suitable for you based on your dietary preferences."
+      );
       setProcessing(false); // processing is done
       setResultPage(true); // show result page
       setCapturedImage(null); // discard image
-      
-
     } catch (error) {
       setError(error.message);
     }
@@ -194,7 +194,7 @@ export default function ScanPage() {
     setScanButton(true);
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     // Check if sessionID cookie exists
     const sessionID = document.cookie.split('; ').find(row => row.startsWith('sessionID='));
     setSessionID(sessionID);
@@ -202,96 +202,132 @@ export default function ScanPage() {
     } else {
       router.push('/welcome');
     }
-  }, [sessionID]);
+  }, [sessionID]);*/
 
-
-
-  
   const videoConstraints = {
     width: 1080,
     height: 1920,
-    facingMode: 'environment'
+    facingMode: "environment",
   };
 
-  const WebcamCapture = ({openCamera, setCapturedImage, setOpenCamera, setProcessing}) => {
+  const WebcamCapture = ({
+    openCamera,
+    setCapturedImage,
+    setOpenCamera,
+    setProcessing,
+  }) => {
     const webcamRef = React.useRef(null);
     const capture = React.useCallback(() => {
-        if (webcamRef.current){
-          const imageSrc = webcamRef.current.getScreenshot();
-          if (!imageSrc) return;
-          setCapturedImage(imageSrc);
-          setOpenCamera(false);
-          setRescan(true);
-        }
+      if (webcamRef.current) {
+        const imageSrc = webcamRef.current.getScreenshot();
+        if (!imageSrc) return;
+        setCapturedImage(imageSrc);
+        setOpenCamera(false);
+        setRescan(true);
+      }
     }, [webcamRef, setCapturedImage, setOpenCamera]);
-   
+
     return (
       <>
-      {openCamera && (
-        <>
-          <Webcam
-            audio={false}
-            height={350}
-            width={350}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            videoConstraints={videoConstraints}
-          />
-          {captureButton && <LongButton text="CAPTURE" onClick={capture} />}
-          <LongButton text="CANCEL" onClick={handleCancelClick} />
-        </>
-      )}
-    </>
-  );
-};
+        {openCamera && (
+          <>
+            <Webcam
+              audio={false}
+              height={350}
+              width={350}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={videoConstraints}
+            />
+            {captureButton && <LongButton text="CAPTURE" onClick={capture} />}
+            <LongButton text="CANCEL" onClick={handleCancelClick} />
+          </>
+        )}
+      </>
+    );
+  };
 
   return (
     <>
-      {isClient ? (clientIsMobile ?
-        <>
-        <title>Scan</title>
-        <div className="relative flex flex-col items-center pt-11 pb-11 justify-center h-screen space-y-3">
-          <div className="flex justify-center w-full">
-            <Image src={Logo} alt="Logo" className="w-32 h-32 -mt-3"/>
-            {showLogout && (
-              <div className="absolute top-24 right-4 bg-white shadow-strong rounded-lg" onClick={handleLogOut} >
-                <button onClick={handleLogOut}  className="bg-white text-black py-2 px-6 rounded-lg border-black border-[1px]">
-                  Log out
-                </button>
-              </div>
+      {isClient ? (
+        clientIsMobile ? (
+          <>
+            <title>Scan</title>
+            <div className="flex flex-col pr-5 pt-5 h-40 items-end">
+              <button
+                className="rounded-full text-white bg-welcomeGreen w-10 h-10 mb-6"
+                onClick={handleTSClick}
+              >
+                TS
+              </button>
+              {showLogout && (
+                <LongButton
+                  onClick={handleLogOut}
+                  className="bg-white text-black rounded-lg border-black border-[1px]"
+                  text="Log Out"
+                />
               )}
-            <button 
-              className="absolute top-12 right-5 rounded-full text-white bg-welcomeGreen w-10 h-10"
-              onClick={handleTSClick}
-            >
-              TS
-            </button>
-          </div>
-          {!resultPage && <div className="text-center lato text-3xl text-cyan w-[70%] font-bold">
-            {processing ? "Just One Moment" : "Scan a Nutrition Label"}
-          </div>}
-          {resultPage && <div className={`text-center lato text-3xl ${safeToConsume ? 'text-green-500' : 'text-red-500'} w-[70%] font-bold`}>
-            {safeToConsume ? "Safe To Consume" : "Not Safe To Consume"}
-          </div>}
-          {resultPage && <div className="text-center text-signupGray w-[70%]">{claudeMessage}</div>}
-          {resultPage && <LongButton text="BACK" onClick={handleBackButton} />}
-          {processing && <div className="text-center text-signupGray">Processing...</div>}
-          {scanButton && <LongButton text="SCAN" onClick={handleScanClick} />}
-          <WebcamCapture openCamera={openCamera} setCapturedImage={setCapturedImage} setOpenCamera={setOpenCamera} setProcessing={setProcessing} />
-          <div className="flex flex-col items-center space-y-4">
-            {capturedImage && (
-              <>
-                <Image src={capturedImage} alt="Captured Nutrition Label" width={350} height={350} />
-                {rescan && <LongButton text="SUBMIT" onClick={handleSubmitClick} />}
-                {rescan && <LongButton text="RESCAN" onClick={handleRescanClick}/>}
-              </>
-            )}
-          </div>
-        </div>
-      </>
-      : 
-      <Desktop />
-    ) : null}
+            </div>
+            <div className="relative flex flex-col items-center pb-11 justify-center space-y-3">
+              <Image src={Logo} alt="Logo" className="w-32 h-32 mt-5" />
+              {!resultPage && (
+                <div className="text-center lato text-3xl text-cyan w-[70%] font-bold">
+                  {processing ? "Just One Moment" : "Scan a Nutrition Label"}
+                </div>
+              )}
+              {resultPage && (
+                <div
+                  className={`text-center lato text-3xl ${
+                    safeToConsume ? "text-green-500" : "text-red-500"
+                  } w-[70%] font-bold`}
+                >
+                  {safeToConsume ? "Safe To Consume" : "Not Safe To Consume"}
+                </div>
+              )}
+              {resultPage && (
+                <div className="text-center text-signupGray w-[70%]">
+                  {claudeMessage}
+                </div>
+              )}
+              {resultPage && (
+                <LongButton text="BACK" onClick={handleBackButton} />
+              )}
+              {processing && (
+                <div className="text-center text-signupGray">Processing...</div>
+              )}
+              {scanButton && (
+                <LongButton text="SCAN" onClick={handleScanClick} />
+              )}
+              <WebcamCapture
+                openCamera={openCamera}
+                setCapturedImage={setCapturedImage}
+                setOpenCamera={setOpenCamera}
+                setProcessing={setProcessing}
+              />
+              <div className="flex flex-col items-center space-y-4">
+                {capturedImage && (
+                  <>
+                    <Image
+                      src={capturedImage}
+                      alt="Captured Nutrition Label"
+                      width={350}
+                      height={350}
+                    />
+                    {rescan && (
+                      <LongButton text="SUBMIT" onClick={handleSubmitClick} />
+                    )}
+                    {rescan && (
+                      <LongButton text="RESCAN" onClick={handleRescanClick} />
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          <Desktop />
+        )
+      ) : null}
     </>
   );
 }
