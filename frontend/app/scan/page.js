@@ -108,7 +108,7 @@ export default function ScanPage() {
     e.preventDefault();
     
     try {
-      const response = await fetch('http://localhost:3001/scan', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/scan`, {
         method: 'POST',
         headers: {
           'Content-Type' : 'application/json',
