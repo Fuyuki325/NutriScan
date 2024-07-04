@@ -10,7 +10,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-
+  const [loading, setLoading] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -29,7 +29,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login`, {
         method: 'POST',
@@ -56,6 +56,7 @@ const Login = () => {
     } catch (error) {
       setError(error.message);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -94,7 +95,7 @@ const Login = () => {
             required
           />
           <div className='flex flex-row justify-center'>
-            <LongButton text="LOGIN" />
+            {!loading ?<LongButton text="LOGIN" /> : <LongButton text="LOADING" />}
           </div>
 
           <div className='flex flex-row justify-center'>

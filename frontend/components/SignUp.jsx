@@ -17,6 +17,7 @@ const SignUp = () => {
     nutFree: false,
   });
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -36,6 +37,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/`, {
@@ -69,6 +71,7 @@ const SignUp = () => {
     } catch (error) {
       setError(error.message);
     }
+    setLoading(false);
   };
 
   return (
@@ -113,7 +116,7 @@ const SignUp = () => {
             required
           />
           {error && <p className="text-red-500 mb-4">{error}</p>}
-          <LongButton text="SIGN UP" />
+          {!loading ? <LongButton text="SIGN UP" /> : <LongButton text="LOADING" />}
 
           <div className='flex flex-row justify-center'>
             <Link

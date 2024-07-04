@@ -31,6 +31,8 @@ export default function ScanPage() {
 
   const [claudeMessage, setClaudeMessage] = useState("");
 
+  const[logoutLoading, setLogoutLoading] = useState(false);
+
   useEffect(() => {
     setIsClient(true);
     setClientIsMobile(isMobile);
@@ -42,6 +44,7 @@ export default function ScanPage() {
   };
 
   const handleLogOut = () => {
+    setLogoutLoading(true);
     delete_cookie("sessionID");
     delete_cookie("A");
     delete_cookie("B");
@@ -49,6 +52,7 @@ export default function ScanPage() {
     delete_cookie("D");
     delete_cookie("E");
     delete_cookie("F");
+    setLogoutLoading(false);
   };
 
   function getCookie(name) {
@@ -93,13 +97,6 @@ export default function ScanPage() {
     setCapturedImage(null);
     setRescan(false);
   };
-
-  function setCookie(name, value, days) {
-    const date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    const expires = "expires=" + date.toUTCString();
-    document.cookie = name + "=" + value + ";" + expires + ";path=/";
-  }
 
   const handleSubmitClick = async (e) => {
     setProcessing(true); // processing(API) starts
@@ -261,11 +258,15 @@ export default function ScanPage() {
                 TS
               </button>
               {showLogout && (
-                <LongButton
+                !logoutLoading ? <LongButton
                   onClick={handleLogOut}
                   className="bg-white text-black rounded-lg border-black border-[1px]"
                   text="Log Out"
-                />
+                /> : <LongButton
+                onClick={handleLogOut}
+                className="bg-white text-black rounded-lg border-black border-[1px]"
+                text="Logging Out"
+              />
               )}
             </div>
             <div className="relative flex flex-col items-center pb-11 justify-center space-y-3">
