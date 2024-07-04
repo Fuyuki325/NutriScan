@@ -58,8 +58,8 @@ export default function ScanPage() {
   }
 
   function get_cookie(name) {
-    alert(name);
     return document.cookie.split(";").some((c) => {
+      alert(c.trim().startsWith(name + "="));
       return c.trim().startsWith(name + "=");
     });
   }
