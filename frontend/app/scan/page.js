@@ -61,6 +61,19 @@ export default function ScanPage() {
     if (parts.length === 2) return parts.pop().split(";").shift();
   }
 
+  function get_cookie_value(name) {
+    const cookies = document.cookie.split(";").map(cookie => cookie.trim());
+  
+    for (let cookie of cookies) {
+      if (cookie.startsWith(name + "=")) {
+        alert(cookie.substring(name.length + 1));
+        return cookie.substring(name.length + 1); // Add 1 for the "=" character
+      }
+    }
+    return null; // Return null if cookie with given name is not found
+  }
+  
+
   function get_cookie(name) {
     return document.cookie.split(";").some((c) => {
       return c.trim().startsWith(name + "=");
@@ -121,7 +134,7 @@ export default function ScanPage() {
 
       const data = await response.json();
       const arr = data.options;
-      if (getCookie("A") && !arr.includes("A")) {
+      if (getCookie("A") && !arr.includes("A") && get_cookie_value("A") === true) {
         setSafeToConsume(false);
         setClaudeMessage("This product is not suitable for vegans.");
         setProcessing(false); // processing is done
@@ -129,7 +142,7 @@ export default function ScanPage() {
         setCapturedImage(null); // discard image
         return;
       }
-      if (getCookie("B") && !arr.includes("B")) {
+      if (getCookie("B") && !arr.includes("B") && get_cookie_value("B") === true) {
         setSafeToConsume(false);
         setClaudeMessage("This product is not suitable for vegetarians.");
         setProcessing(false); // processing is done
@@ -137,7 +150,7 @@ export default function ScanPage() {
         setCapturedImage(null); // discard image
         return;
       }
-      if (getCookie("C") && !arr.includes("C")) {
+      if (getCookie("C") && !arr.includes("C") && get_cookie_value("C") === true) {
         setSafeToConsume(false);
         setClaudeMessage("This product is not halal.");
         setProcessing(false); // processing is done
@@ -145,7 +158,7 @@ export default function ScanPage() {
         setCapturedImage(null); // discard image
         return;
       }
-      if (getCookie("D") && !arr.includes("D")) {
+      if (getCookie("D") && !arr.includes("D") && get_cookie_value("D") === true) {
         setSafeToConsume(false);
         setClaudeMessage("This product is not gluten-free.");
         setProcessing(false); // processing is done
@@ -153,7 +166,7 @@ export default function ScanPage() {
         setCapturedImage(null); // discard image
         return;
       }
-      if (getCookie("E") && !arr.includes("E")) {
+      if (getCookie("E") && !arr.includes("E") && get_cookie_value("E") === true) {
         setSafeToConsume(false);
         setClaudeMessage("This product is not dairy-free.");
         setProcessing(false); // processing is done
@@ -161,7 +174,7 @@ export default function ScanPage() {
         setCapturedImage(null); // discard image
         return;
       }
-      if (getCookie("F") && !arr.includes("F")) {
+      if (getCookie("F") && !arr.includes("F") && get_cookie_value("F") === true) {
         setSafeToConsume(false);
         setClaudeMessage("This product is not nut-free.");
         setProcessing(false); // processing is done
