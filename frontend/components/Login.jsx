@@ -52,7 +52,6 @@ const Login = () => {
       setCookie('D', data.diet.D);
       setCookie('E', data.diet.E);
       setCookie('F', data.diet.F);
-      alert(document.cookie);
       router.push('/scan');
     } catch (error) {
       setError(error.message);
