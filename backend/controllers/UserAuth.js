@@ -44,7 +44,7 @@ exports.getCookieByCredential = async (req, res) => {
   const password = req.body.password;
   const emailExists = await User.emailChecker(email);
   if (!emailExists) {
-    res.status(403).json({ message: "Email or Password is incorrect" })
+    res.status(403).json({ message: "Email does not exist" })
   }
   const user = await User.getByEmail(email);
   if (password !== user.password) {
